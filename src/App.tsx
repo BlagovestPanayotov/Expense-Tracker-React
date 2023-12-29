@@ -1,8 +1,9 @@
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import "./App.css";
 import Form from "./components/Form/Form";
 import ItemsList from "./components/ItemsList/ItemsList";
 import { FieldValues } from "react-hook-form";
+import Filter from "./components/Filter/Filter";
 
 interface Items {
   id: string;
@@ -12,28 +13,20 @@ interface Items {
 }
 
 function App() {
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [items, setItems] = useState([
     { id: "1", description: "Milk", amount: 5, category: "Groceries" },
     { id: "2", description: "Eggs", amount: 10, category: "Groceries" },
     { id: "3", description: "Milk", amount: 5, category: "Groceries" },
   ]);
 
-  const [currentItems, setCurrentItems] = useState(items);
-
-  function onSelectChange(e: ChangeEvent<HTMLSelectElement>) {
-    const value = e.target.value;
-    if (value === "all") {
-      setCurrentItems(items);
-    } else {
-      setCurrentItems(items.filter((i) => i.category === value));
-    }
+  function onSelectCategory(category: string) {
+    setSelectedCategory(category);
   }
 
   function onDeleteItem(id: string) {
     const newItems = items.filter((i) => i.id !== id);
-    const newCurrentItems = currentItems.filter((i) => i.id !== id);
     setItems(newItems);
-    setCurrentItems(newCurrentItems);
   }
 
   function onAddItem(d: FieldValues) {
@@ -48,15 +41,20 @@ function App() {
       },
     ];
     setItems(newItems);
-    setCurrentItems(newItems);
   }
+
+  const visibleItems = selectedCategory
+    ? items.filter((i) => i.category === selectedCategory)
+    : items;
 
   return (
     <>
       <Form onAddItem={onAddItem}></Form>
+      <Filter
+        onSelectCategory={(category) => onSelectCategory(category)}
+      ></Filter>
       <ItemsList
-        currentItems={currentItems as Items[]}
-        onSelectChange={onSelectChange}
+        items={visibleItems as Items[]}
         onDeleteItems={onDeleteItem}
       ></ItemsList>
     </>
