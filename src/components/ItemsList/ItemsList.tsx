@@ -18,6 +18,7 @@ const ItemsList = ({
   onDeleteItems,
   onSelectChange,
 }: ItemsProps) => {
+  if (currentItems.length === 0) return <h2>No Expences</h2>;
   return (
     <>
       <div className="mb-3 mt-3">
@@ -65,9 +66,11 @@ const ItemsList = ({
             <td>Total</td>
             <td>
               $
-              {currentItems.reduce((a, c) => {
-                return a + c.amount;
-              }, 0)}
+              {currentItems
+                .reduce((a, c) => {
+                  return a + c.amount;
+                }, 0)
+                .toFixed(2)}
             </td>
             <td></td>
             <td></td>
