@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./App.css";
+import Form from "./components/Form/Form";
 import ItemsList from "./components/ItemsList/ItemsList";
 
 interface Items {
@@ -25,6 +26,7 @@ function App() {
 
   return (
     <>
+      <Form></Form>
       <ItemsList
         items={items as Items[]}
         onDeleteItems={onDeleteItem}
