@@ -1,9 +1,6 @@
-import { ChangeEvent } from "react";
-
 interface ItemsProps {
-  currentItems: Items[];
+  items: Items[];
   onDeleteItems: (id: string) => void;
-  onSelectChange: (e: ChangeEvent<HTMLSelectElement>) => void;
 }
 
 interface Items {
@@ -13,27 +10,10 @@ interface Items {
   category: string;
 }
 
-const ItemsList = ({
-  currentItems,
-  onDeleteItems,
-  onSelectChange,
-}: ItemsProps) => {
-  if (currentItems.length === 0) return <h2>No Expences</h2>;
+const ItemsList = ({ items, onDeleteItems }: ItemsProps) => {
+  if (items.length === 0) return <h2>No Expences</h2>;
   return (
     <>
-      <div className="mb-3 mt-3">
-        <select
-          onChange={(e) => onSelectChange(e)}
-          className="form-select"
-          aria-label="Default select example"
-        >
-          <option value="all">All</option>
-          <option value="Groceries">Groseries</option>
-          <option value="Utilities">Utilities</option>
-          <option value="Entertainment">Entertainment</option>
-        </select>
-      </div>
-
       <table className="table table-bordered">
         <thead>
           <tr>
@@ -44,7 +24,7 @@ const ItemsList = ({
           </tr>
         </thead>
         <tbody>
-          {currentItems.map((i) => (
+          {items.map((i) => (
             <tr key={i.id}>
               <td>{i.description}</td>
               <td>${i.amount}.00</td>
@@ -66,7 +46,7 @@ const ItemsList = ({
             <td>Total</td>
             <td>
               $
-              {currentItems
+              {items
                 .reduce((a, c) => {
                   return a + c.amount;
                 }, 0)
