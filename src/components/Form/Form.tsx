@@ -13,7 +13,7 @@ const schema = z.object({
   amount: z
     .number({ invalid_type_error: "Amount is required." })
     .min(1, "Amount must be a positive number."),
-  category: z.enum(["groseries", "utilities", "entertainment"], {
+  category: z.enum(["Groseries", "Utilities", "Entertainment"], {
     errorMap: () => ({ message: "Category is required." }),
   }),
 });
@@ -72,9 +72,9 @@ const Form = ({ onAddItem }: FormProps) => {
           id="category"
         >
           <option value=""></option>
-          <option value="groseries">Groseries</option>
-          <option value="utilities">Utilities</option>
-          <option value="entertainment">Entertainment</option>
+          <option value="Groseries">Groseries</option>
+          <option value="Utilities">Utilities</option>
+          <option value="Entertainment">Entertainment</option>
         </select>
         {errors.category && (
           <p className="text-danger">{errors.category.message}</p>

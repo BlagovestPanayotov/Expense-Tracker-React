@@ -1,6 +1,9 @@
+import { ChangeEvent } from "react";
+
 interface ItemsProps {
-  items: Items[];
+  currentItems: Items[];
   onDeleteItems: (id: string) => void;
+  onSelectChange: (e: ChangeEvent<HTMLSelectElement>) => void;
 }
 
 interface Items {
@@ -10,49 +13,68 @@ interface Items {
   category: string;
 }
 
-const ItemsList = ({ items, onDeleteItems }: ItemsProps) => {
+const ItemsList = ({
+  currentItems,
+  onDeleteItems,
+  onSelectChange,
+}: ItemsProps) => {
   return (
-    <table className="table table-bordered">
-      <thead>
-        <tr>
-          <th>Description</th>
-          <th>Amount</th>
-          <th>Category</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        {items.map((i) => (
-          <tr key={i.id}>
-            <td>{i.description}</td>
-            <td>${i.amount}.00</td>
-            <td>{i.category}</td>
-            <td>
-              <button
-                onClick={() => onDeleteItems(i.id)}
-                type="button"
-                className="btn btn-outline-danger"
-              >
-                Delete
-              </button>
-            </td>
+    <>
+      <div className="mb-3 mt-3">
+        <select
+          onChange={(e) => onSelectChange(e)}
+          className="form-select"
+          aria-label="Default select example"
+        >
+          <option value="all">All</option>
+          <option value="Groceries">Groseries</option>
+          <option value="Utilities">Utilities</option>
+          <option value="Entertainment">Entertainment</option>
+        </select>
+      </div>
+
+      <table className="table table-bordered">
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Category</th>
+            <th></th>
           </tr>
-        ))}
-      </tbody>
-      <tfoot>
-        <tr>
-          <td>Total</td>
-          <td>
-            $
-            {items.reduce((a, c) => {
-              return a + c.amount;
-            }, 0)}
-          </td>
-          <td></td>
-          <td></td>
-        </tr>
-      </tfoot>
-    </table>
+        </thead>
+        <tbody>
+          {currentItems.map((i) => (
+            <tr key={i.id}>
+              <td>{i.description}</td>
+              <td>${i.amount}.00</td>
+              <td>{i.category}</td>
+              <td>
+                <button
+                  onClick={() => onDeleteItems(i.id)}
+                  type="button"
+                  className="btn btn-outline-danger"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+        <tfoot>
+          <tr>
+            <td>Total</td>
+            <td>
+              $
+              {currentItems.reduce((a, c) => {
+                return a + c.amount;
+              }, 0)}
+            </td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </>
   );
 };
 
