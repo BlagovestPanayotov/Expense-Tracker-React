@@ -1,9 +1,10 @@
 import { useState } from "react";
-import "./App.css";
-import Form from "./components/Form/Form";
-import ItemsList from "./components/ItemsList/ItemsList";
 import { FieldValues } from "react-hook-form";
+import Form from "./components/Form/Form";
+
+import ItemsList from "./components/ItemsList/ItemsList";
 import Filter from "./components/Filter/Filter";
+import "./App.css";
 
 interface Items {
   id: string;

@@ -1,6 +1,7 @@
 import { FieldValues, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import categories from "../../categories";
 
 interface FormProps {
   onAddItem: (d: FieldValues) => void;
@@ -12,8 +13,8 @@ const schema = z.object({
     .min(3, { message: "Description should be at least 3 characters." }),
   amount: z
     .number({ invalid_type_error: "Amount is required." })
-    .min(1, "Amount must be a positive number."),
-  category: z.enum(["Groseries", "Utilities", "Entertainment"], {
+    .min(0.01, "Amount must be a positive number."),
+  category: z.enum(categories, {
     errorMap: () => ({ message: "Category is required." }),
   }),
 });
@@ -24,15 +25,17 @@ const Form = ({ onAddItem }: FormProps) => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
-  // function onSubmision(d: FieldValues) {
-  //   console.log(d);
-  // }
-
   return (
-    <form onSubmit={handleSubmit((d) => onAddItem(d))}>
+    <form
+      onSubmit={handleSubmit((d) => {
+        onAddItem(d);
+        reset();
+      })}
+    >
       <div className="mb-3">
         <label className="form-label" htmlFor="descrption">
           Descrption
@@ -72,9 +75,11 @@ const Form = ({ onAddItem }: FormProps) => {
           id="category"
         >
           <option value=""></option>
-          <option value="Groseries">Groseries</option>
-          <option value="Utilities">Utilities</option>
-          <option value="Entertainment">Entertainment</option>
+          {categories.map((c) => (
+            <option key={c} value={c}>
+              {c}
+            </option>
+          ))}
         </select>
         {errors.category && (
           <p className="text-danger">{errors.category.message}</p>

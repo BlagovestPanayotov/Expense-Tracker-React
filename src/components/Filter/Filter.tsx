@@ -1,3 +1,5 @@
+import categories from "../../categories";
+
 interface FilterProps {
   onSelectCategory: (category: string) => void;
 }
@@ -11,9 +13,11 @@ const Filter = ({ onSelectCategory }: FilterProps) => {
         aria-label="Default select example"
       >
         <option value="">All</option>
-        <option value="Groceries">Groseries</option>
-        <option value="Utilities">Utilities</option>
-        <option value="Entertainment">Entertainment</option>
+        {categories.map((c) => (
+          <option key={c} value={c}>
+            {c}
+          </option>
+        ))}
       </select>
     </div>
   );
